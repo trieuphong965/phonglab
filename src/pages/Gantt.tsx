@@ -119,7 +119,11 @@ export default function Gantt({ selected, subTab }: { selected?: string; subTab?
   useEffect(() => {
     if (!items || scrolled.current || !scroller.current) return;
     scrolled.current = true;
-    scroller.current.scrollLeft = Math.max(0, (today - min) * px - 80);
+    if (selected) return; // a deep link already scrolled to its task
+    // Start at the earliest task still active in the last two weeks, but never later than today.
+    const recent = rows.filter((r) => r.end >= today - 14).map((r) => r.start);
+    const anchor = Math.min(today - 2, ...recent);
+    scroller.current.scrollLeft = Math.max(0, (anchor - min) * px - 24);
   }, [items]);
 
   /* ----- header cells ----- */

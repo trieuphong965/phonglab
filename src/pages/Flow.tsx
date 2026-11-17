@@ -153,6 +153,8 @@ export default function Flow({ selected, theme }: { selected?: string; theme: st
                   elements: (flow.scene.elements ?? []) as never,
                   appState: { viewBackgroundColor: flow.scene.appState?.viewBackgroundColor as string | undefined },
                   files: (flow.scene.files ?? {}) as never,
+                  // Open with the whole drawing in view instead of at the origin.
+                  scrollToContent: true,
                 }}
                 onChange={(elements, appState, files) => {
                   const data = JSON.stringify({
