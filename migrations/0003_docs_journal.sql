@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS docs (
+  id TEXT PRIMARY KEY,
+  name TEXT NOT NULL,
+  size INTEGER NOT NULL DEFAULT 0,
+  type TEXT NOT NULL DEFAULT '',
+  tags TEXT NOT NULL DEFAULT '',
+  note TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_docs_created ON docs (created_at DESC);
+
+CREATE TABLE IF NOT EXISTS journal (
+  date TEXT PRIMARY KEY,
+  content TEXT NOT NULL DEFAULT '',
+  updated_at TEXT NOT NULL
+);

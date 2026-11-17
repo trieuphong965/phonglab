@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 160">
+  <!-- PhongLab mark: an S cut from a 3:4 block, 180° rotationally symmetric. -->
+  <defs>
+    <clipPath id="r"><rect width="120" height="160" rx="5"/></clipPath>
+    <path id="b" d="M67 0H120V93.75L82 65.25V18Q82 15 79 15H73Q67 15 67 9Z"/>
+  </defs>
+  <g clip-path="url(#r)" fill="#f2f4f4">
+    <path d="M0 0H53V9Q53 15 47 15H41Q38 15 38 18V39.75L120 101.25V160H67V151Q67 145 73 145H79Q82 145 82 142V120.25L0 58.75Z"/>
+    <use href="#b"/>
+    <use href="#b" transform="rotate(180 60 80)"/>
+  </g>
+</svg>

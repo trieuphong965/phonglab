@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Tab icon: the mark at 75% of the tile height so it stays readable at 16px. -->
+  <rect width="64" height="64" rx="14" fill="#0b0b0b"/>
+  <defs>
+    <clipPath id="r"><rect width="120" height="160" rx="5"/></clipPath>
+    <path id="b" d="M67 0H120V93.75L82 65.25V18Q82 15 79 15H73Q67 15 67 9Z"/>
+  </defs>
+  <g transform="translate(14 8) scale(0.3)">
+    <g clip-path="url(#r)" fill="#f2f4f4">
+      <path d="M0 0H53V9Q53 15 47 15H41Q38 15 38 18V39.75L120 101.25V160H67V151Q67 145 73 145H79Q82 145 82 142V120.25L0 58.75Z"/>
+      <use href="#b"/>
+      <use href="#b" transform="rotate(180 60 80)"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,40 @@
+{
+  "name": "phonglab",
+  "private": true,
+  "version": "0.2.0",
+  "description": "A self-hosted personal workspace on Cloudflare: notes, Gantt schedule, to-do, diagrams, documents, journal, checklists and glossary.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler d1 migrations apply phonglab --local && vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit -p .",
+    "db:local": "wrangler d1 migrations apply phonglab --local",
+    "db:remote": "wrangler d1 migrations apply phonglab --remote",
+    "deploy": "vite build && wrangler deploy && wrangler d1 migrations apply phonglab --remote",
+    "dev:mine": "node scripts/mine.mjs dev",
+    "deploy:mine": "node scripts/mine.mjs deploy",
+    "seed:glossary": "node seeds/glossary-electrical-plc.mjs && wrangler d1 execute phonglab --remote --file seeds/glossary-electrical-plc.sql"
+  },
+  "dependencies": {
+    "@excalidraw/excalidraw": "^0.18.1",
+    "dompurify": "^3.4.18",
+    "exceljs": "^4.4.0",
+    "hono": "^4.13.19",
+    "jspdf": "^4.2.1",
+    "marked": "^18.2.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.69.1",
+    "@cloudflare/workers-types": "^5.20261116.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "wrangler": "^4.163.0"
+  }
+}

@@ -1,0 +1,31 @@
+// Template config for a fresh PhongLab install.
+// Wrangler creates the D1 database and R2 bucket on first deploy when they don't exist yet.
+// To deploy your own site with fixed ids and a custom domain, copy this file to
+// wrangler.mine.jsonc (git-ignored), fill it in, and use `npm run deploy:mine`.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "phonglab",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-06-01",
+  "assets": {
+    "not_found_handling": "single-page-application",
+    "run_worker_first": ["/api/*"]
+  },
+  // Example of a custom domain (add it in your own wrangler.mine.jsonc):
+  // "routes": [{ "pattern": "example.com", "custom_domain": true }],
+  "vars": {
+    // Every API call must carry a valid Cloudflare Access token.
+    // The API refuses all requests until both values below are set (see README → Sign-in).
+    "REQUIRE_ACCESS": "true",
+    "ACCESS_TEAM_DOMAIN": "",
+    "ACCESS_AUD": ""
+  },
+  "r2_buckets": [{ "binding": "FILES", "bucket_name": "phonglab-files" }],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "phonglab",
+      "migrations_dir": "migrations"
+    }
+  ]
+}
