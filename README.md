@@ -5,6 +5,8 @@
 <p align="center">A self-hosted personal workspace that runs entirely on your own Cloudflare account.<br>
 <a href="#tiếng-việt">Tiếng Việt</a> · <a href="#日本語">日本語</a></p>
 
+<p align="center"><img src="docs/screenshots/gantt.png" alt="Schedule (Gantt) with a task's history panel open" width="900"></p>
+
 ---
 
 ## What's inside
@@ -23,6 +25,28 @@
 | **Search** | `Ctrl+K` across everything |
 
 The interface is available in Vietnamese, Japanese and English, with light and dark themes.
+
+## Screenshots
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/home.png" alt="Home"><br><sub><b>Home</b>: quick capture, open tasks, recent notes</sub></td>
+    <td width="50%"><img src="docs/screenshots/gantt-dark.png" alt="Schedule in dark theme"><br><sub><b>Schedule</b>: dependencies, progress, planned/actual hours, comment dots (dark theme)</sub></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/notes.png" alt="Notes"><br><sub><b>Notes</b>: Markdown with tags and pinning</sub></td>
+    <td><img src="docs/screenshots/diagram.png" alt="Diagrams"><br><sub><b>Diagrams</b>: Excalidraw, export to PDF (A4/A3) or Excel</sub></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/checklist.png" alt="Checklists"><br><sub><b>Checklists</b>: templates, sections, per-item notes</sub></td>
+    <td><img src="docs/screenshots/glossary.png" alt="Glossary"><br><sub><b>Glossary</b>: grouped Vietnamese ⇄ Japanese ⇄ English terms</sub></td>
+  </tr>
+  <tr>
+    <td colspan="2"><img src="docs/screenshots/journal.png" alt="Journal" width="49%"><br><sub><b>Journal</b>: one page per day, pulls in what you finished</sub></td>
+  </tr>
+</table>
+
+Screenshots use sample data from [`scripts/demo-data.mjs`](scripts/demo-data.mjs).
 
 ## How it runs
 
