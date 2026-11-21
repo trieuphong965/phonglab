@@ -96,7 +96,7 @@ npm run dev:mine      # local development against your config
 npm run deploy:mine   # migrate + build + deploy your site
 ```
 
-Site name, your name, default language and logo are set in the app under **Settings**, not in code, so updating to a new version never conflicts with your changes.
+Site name, default language and logo are set in the app under **Settings**, not in code, so updating to a new version never conflicts with your changes.
 
 ## Updating
 

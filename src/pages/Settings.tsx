@@ -8,13 +8,13 @@ const LANG_NAME: Record<Lang, string> = { vi: "Tiếng Việt", ja: "日本語",
 export default function SettingsPage() {
   const { t } = useT();
   const { settings, reload } = useSettings();
-  const [form, setForm] = useState({ site_name: "", owner_name: "", default_lang: "en" as Lang });
+  const [form, setForm] = useState({ site_name: "", default_lang: "en" as Lang });
   const [state, setState] = useState("");
   const picker = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    setForm({ site_name: settings.site_name, owner_name: settings.owner_name, default_lang: settings.default_lang });
-  }, [settings.site_name, settings.owner_name, settings.default_lang]);
+    setForm({ site_name: settings.site_name, default_lang: settings.default_lang });
+  }, [settings.site_name, settings.default_lang]);
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
@@ -51,10 +51,6 @@ export default function SettingsPage() {
       <form className="panel settings-form" onSubmit={save}>
         <label className="field">{t("siteName")}
           <input value={form.site_name} maxLength={60} onChange={(e) => setForm({ ...form, site_name: e.target.value })} />
-        </label>
-        <label className="field">{t("ownerName")}
-          <input value={form.owner_name} maxLength={60} onChange={(e) => setForm({ ...form, owner_name: e.target.value })} />
-          <span className="muted small">{t("ownerNameHint")}</span>
         </label>
         <label className="field">{t("defaultLanguage")}
           <select value={form.default_lang} onChange={(e) => setForm({ ...form, default_lang: e.target.value as Lang })}>

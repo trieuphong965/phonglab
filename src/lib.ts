@@ -239,8 +239,6 @@ const dict = {
   collapse: ["Thu gọn / mở rộng menu", "メニューを折りたたむ / 展開", "Collapse / expand menu"],
   settings: ["Cài đặt", "設定", "Settings"],
   siteName: ["Tên site", "サイト名", "Site name"],
-  ownerName: ["Tên của bạn", "あなたの名前", "Your name"],
-  ownerNameHint: ["Hiện nhỏ phía trên ngày ở trang chủ. Có thể để trống.", "ホームの日付の上に小さく表示します。空欄でも可。", "Shown small above the date on Home. Can be empty."],
   defaultLanguage: ["Ngôn ngữ mặc định", "既定の言語", "Default language"],
   defaultLanguageHint: [
     "Áp dụng khi trình duyệt chưa chọn ngôn ngữ nào.",

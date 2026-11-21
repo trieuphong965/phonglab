@@ -1,6 +1,6 @@
 import { Pin } from "lucide-react";
 import { useEffect, useState } from "react";
-import { api, locale, useSettings, navigate, fmtDate, todayStr, useT, type FlowItem, type NoteItem, type Task } from "../lib";
+import { api, locale, navigate, fmtDate, todayStr, useT, type FlowItem, type NoteItem, type Task } from "../lib";
 
 type Summary = {
   counts: { notes: number; todo: number; doing: number; done: number; flows: number };
@@ -11,7 +11,6 @@ type Summary = {
 
 export default function Home() {
   const { t, lang } = useT();
-  const { settings } = useSettings();
   const [data, setData] = useState<Summary | null>(null);
   const [quick, setQuick] = useState("");
   const [flash, setFlash] = useState(false);
@@ -48,7 +47,6 @@ export default function Home() {
   return (
     <div className="page home">
       <header className="home-head">
-        {settings.owner_name && <p className="eyebrow">{settings.owner_name}</p>}
         <h1>{dateLine}</h1>
       </header>
 
