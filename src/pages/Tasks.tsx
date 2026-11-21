@@ -1,3 +1,4 @@
+import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api, fmtDate, todayStr, useT, type Project, type Status, type Task } from "../lib";
 
@@ -85,7 +86,7 @@ export default function Tasks() {
               <span className="swatch" style={{ background: p.color }} />
               {p.name}
               {filter === p.id && (
-                <span className="chip-x" role="button" aria-label={t("del")} onClick={(e) => { e.stopPropagation(); removeProject(p.id); }}>×</span>
+                <span className="chip-x" role="button" aria-label={t("del")} onClick={(e) => { e.stopPropagation(); removeProject(p.id); }}><X /></span>
               )}
             </button>
           ))}

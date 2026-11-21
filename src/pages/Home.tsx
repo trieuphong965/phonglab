@@ -1,3 +1,4 @@
+import { Pin } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api, locale, useSettings, navigate, fmtDate, todayStr, useT, type FlowItem, type NoteItem, type Task } from "../lib";
 
@@ -20,11 +21,8 @@ export default function Home() {
     load();
   }, []);
 
-  const hour = new Date().getHours();
-  const greet = t(hour < 11 ? "morning" : hour < 18 ? "afternoon" : "evening");
   const dateLine = new Date().toLocaleDateString(locale(lang), {
     weekday: "long",
-    year: "numeric",
     month: "long",
     day: "numeric",
   });
@@ -50,8 +48,8 @@ export default function Home() {
   return (
     <div className="page home">
       <header className="home-head">
-        <p className="eyebrow">{dateLine}</p>
-        <h1>{settings.owner_name ? `${greet}, ${settings.owner_name}.` : greet}</h1>
+        {settings.owner_name && <p className="eyebrow">{settings.owner_name}</p>}
+        <h1>{dateLine}</h1>
       </header>
 
       <form className="quick" onSubmit={capture}>
@@ -95,7 +93,7 @@ export default function Home() {
             {data?.notes.map((n) => (
               <li key={n.id}>
                 <a href={"/notes/" + n.id} onClick={go("/notes/" + n.id)}>
-                  <span className="grow">{n.pinned ? "★ " : ""}{n.title || t("untitled")}</span>
+                  <span className="grow">{n.pinned ? <Pin /> : null}{n.title || t("untitled")}</span>
                   <span className="muted small">{fmtDate(n.updated_at, lang)}</span>
                 </a>
               </li>

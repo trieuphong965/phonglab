@@ -1,3 +1,4 @@
+import { ArrowLeft, ArrowRight, Download } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api, locale, navigate, todayStr, useAutosave, useT } from "../lib";
 import { fromDay, toDay } from "../gantt";
@@ -56,7 +57,7 @@ export default function Journal({ selected }: { selected?: string }) {
   const activityItems = (day?.activity ?? []).map((a) =>
     a.kind === "comment"
       ? `[${a.title}] ${firstLine(a.body)}`
-      : `[${a.title}] 📎 ${a.name ?? "?"} rev${a.rev ?? "?"}${a.body ? " · " + firstLine(a.body) : ""}`,
+      : `[${a.title}] ${a.name ?? "?"} rev${a.rev ?? "?"}${a.body ? " · " + firstLine(a.body) : ""}`,
   );
   const insert = () => {
     if (!day) return;
@@ -81,7 +82,7 @@ export default function Journal({ selected }: { selected?: string }) {
       <div className="list-pane narrow">
         <div className="list-head">
           <input type="month" value={month} onChange={(e) => e.target.value && navigate(`/journal/${e.target.value}-01`)} aria-label={t("month")} />
-          <button className="btn wide" onClick={exportMonth} disabled={busy || entries.length === 0}>⬇ {t("exportMonth")}</button>
+          <button className="btn wide" onClick={exportMonth} disabled={busy || entries.length === 0}><Download />{t("exportMonth")}</button>
         </div>
         <ul className="note-list">
           {entries.map((e) => (
@@ -98,9 +99,9 @@ export default function Journal({ selected }: { selected?: string }) {
 
       <div className="detail-pane">
         <div className="toolbar">
-          <button className="btn" onClick={() => shift(-1)} aria-label="prev">←</button>
+          <button className="btn" onClick={() => shift(-1)} aria-label="prev"><ArrowLeft /></button>
           <input type="date" className="date-pick" value={date} onChange={(e) => e.target.value && navigate("/journal/" + e.target.value)} aria-label={t("day")} />
-          <button className="btn" onClick={() => shift(1)} aria-label="next">→</button>
+          <button className="btn" onClick={() => shift(1)} aria-label="next"><ArrowRight /></button>
           {date !== todayStr() && <button className="btn" onClick={() => navigate("/journal")}>{t("today")}</button>}
           <span className={"save-state " + state}>
             {state === "saving" ? t("saving") : state === "saved" ? t("saved") : state === "error" ? t("saveError") : ""}

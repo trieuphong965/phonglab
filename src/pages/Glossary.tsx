@@ -1,3 +1,4 @@
+import { Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api, navigate, store, stored, useT } from "../lib";
 
@@ -193,7 +194,7 @@ export default function Glossary({ selected }: { selected?: string }) {
                       {(needle || group === null) && groupName(x.group_id) && <i className="tag grp">{groupName(x.group_id)}</i>}
                       {tagsOf(x.tags).map((g) => <i key={g} className="tag">{g}</i>)}
                     </td>
-                    <td><button className="btn" onClick={() => setEditing(x)} aria-label={t("edit")}>✎</button></td>
+                    <td><button className="btn" onClick={() => setEditing(x)} aria-label={t("edit")}><Pencil /></button></td>
                   </tr>
                 ))}
               </tbody>

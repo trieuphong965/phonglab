@@ -122,6 +122,8 @@ Create a `.dev.vars` file with `REQUIRE_ACCESS=false` for local development.
 
 [MIT](LICENSE)
 
+The interface design pass follows [unslop](https://github.com/heydamir/unslop) by Damir Sokolovsky ([@heydamir](https://x.com/heydamir)), licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
 ---
 
 ## Tiếng Việt
