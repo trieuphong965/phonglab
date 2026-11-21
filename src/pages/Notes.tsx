@@ -1,3 +1,4 @@
+import { ArrowLeft, Pin } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
@@ -88,7 +89,7 @@ export default function Notes({ selected }: { selected?: string }) {
                 className={n.id === selected ? "active" : ""}
                 onClick={(e) => { e.preventDefault(); navigate("/notes/" + n.id); }}
               >
-                <strong>{n.pinned ? "★ " : ""}{n.title || t("untitled")}</strong>
+                <strong>{n.pinned ? <Pin /> : null}{n.title || t("untitled")}</strong>
                 <span className="excerpt">{n.excerpt}</span>
                 <span className="meta">
                   {fmtDate(n.updated_at, lang)}
@@ -107,7 +108,7 @@ export default function Notes({ selected }: { selected?: string }) {
         ) : (
           <>
             <div className="toolbar">
-              <button className="btn back" onClick={() => navigate("/notes")}>←</button>
+              <button className="btn back" onClick={() => navigate("/notes")}><ArrowLeft /></button>
               <div className="seg">
                 <button className={mode === "edit" ? "on" : ""} onClick={() => setMode("edit")}>{t("edit")}</button>
                 <button className={mode === "preview" ? "on" : ""} onClick={() => setMode("preview")}>{t("preview")}</button>

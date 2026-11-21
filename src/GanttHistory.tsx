@@ -1,3 +1,4 @@
+import { Pencil, Download, Paperclip, FolderOpen, FileText, MessageSquare } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { marked } from "marked";
 import DOMPurify from "dompurify";
@@ -22,7 +23,7 @@ const FIELD: Record<string, Key> = {
   plan_hours: "planHours",
   actual_hours: "actualHours",
 };
-const ICON: Record<Kind, string> = { comment: "💬", file: "📎", change: "✎" };
+const ICON: Record<Kind, React.ReactNode> = { comment: <MessageSquare />, file: <Paperclip />, change: <Pencil /> };
 
 export default function GanttHistory({ itemId, refresh, onChanged }: { itemId: string; refresh: number; onChanged?: () => void }) {
   const { t, lang } = useT();
@@ -130,7 +131,7 @@ export default function GanttHistory({ itemId, refresh, onChanged }: { itemId: s
               <span className="rev">rev{f.rev}</span>
               {fileLink(f, f.name)}
               <span className="muted small">{fmtSize(f.size)}</span>
-              <a className="muted small" href={`/api/gantt/files/${f.id}?download`} aria-label={t("download")} title={t("download")}>⬇</a>
+              <a className="muted small" href={`/api/gantt/files/${f.id}?download`} aria-label={t("download")} title={t("download")}><Download /></a>
             </p>
           ) : (
             <p className="muted">—</p>
@@ -248,9 +249,9 @@ export default function GanttHistory({ itemId, refresh, onChanged }: { itemId: s
             <input type="date" value={date} onChange={(e) => e.target.value && setDate(e.target.value)} />
           </label>
           <span className="grow" />
-          <button type="button" className="btn" disabled={!data.storage} title={data.storage ? t("attachHint") : t("noStorage")} onClick={() => picker.current?.click()}>📎 {t("attach")}</button>
+          <button type="button" className="btn" disabled={!data.storage} title={data.storage ? t("attachHint") : t("noStorage")} onClick={() => picker.current?.click()}><Paperclip />{t("attach")}</button>
           <input ref={picker} type="file" multiple hidden onChange={(e) => { if (e.target.files?.length) upload(e.target.files); e.target.value = ""; }} />
-          <button type="button" className="btn" disabled={!data.storage} title={t("fromDocsHint")} onClick={() => setPicking(true)}>📁 {t("fromDocs")}</button>
+          <button type="button" className="btn" disabled={!data.storage} title={t("fromDocsHint")} onClick={() => setPicking(true)}><FolderOpen />{t("fromDocs")}</button>
           <button type="submit" className="btn primary" disabled={!text.trim()}>{t("send")}</button>
         </div>
       </form>
@@ -292,7 +293,7 @@ function DocPicker({ onPick, onClose }: { onPick: (d: Doc) => void; onClose: () 
             {shown.map((d, i) => (
               <li key={d.id}>
                 <button className={i === active ? "active" : ""} onMouseEnter={() => setActive(i)} onClick={() => onPick(d)}>
-                  <span className="kind">📄</span>
+                  <span className="kind"><FileText /></span>
                   <span className="grow">
                     <strong>{d.name}</strong>
                     <span className="excerpt">

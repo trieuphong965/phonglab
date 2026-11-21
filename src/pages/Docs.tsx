@@ -1,3 +1,4 @@
+import { Pencil, Download, Upload } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { api, fmtDate, useT } from "../lib";
 
@@ -86,7 +87,7 @@ export default function Docs() {
       <header className="page-head">
         <h1>{t("docs")}</h1>
         <input type="search" className="grow" value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("search")} aria-label={t("search")} />
-        <button className="btn primary" disabled={!storage} onClick={() => picker.current?.click()}>⬆ {t("upload")}</button>
+        <button className="btn primary" disabled={!storage} onClick={() => picker.current?.click()}><Upload />{t("upload")}</button>
         <input ref={picker} type="file" multiple hidden onChange={(e) => { if (e.target.files?.length) upload(e.target.files); e.target.value = ""; }} />
       </header>
 
@@ -112,8 +113,8 @@ export default function Docs() {
                 {d.note && <span className="excerpt">{d.note}</span>}
               </span>
             </a>
-            <a className="btn" href={`/api/docs/${d.id}/file?download`} title={t("download")} aria-label={t("download")}>⬇</a>
-            <button className="btn" title={t("edit")} aria-label={t("edit")} onClick={() => setEditing(d)}>✎</button>
+            <a className="btn" href={`/api/docs/${d.id}/file?download`} title={t("download")} aria-label={t("download")}><Download /></a>
+            <button className="btn" title={t("edit")} aria-label={t("edit")} onClick={() => setEditing(d)}><Pencil /></button>
           </li>
         ))}
       </ul>

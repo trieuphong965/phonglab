@@ -1,3 +1,4 @@
+import { X, ArrowLeft, NotebookPen } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api, fmtDate, navigate, useAutosave, useT } from "../lib";
 
@@ -138,7 +139,7 @@ export default function Checklist({ selected }: { selected?: string }) {
         ) : (
           <>
             <div className="toolbar">
-              <button className="btn back" onClick={() => navigate("/checklist")}>←</button>
+              <button className="btn back" onClick={() => navigate("/checklist")}><ArrowLeft /></button>
               <span className={"save-state " + state}>
                 {state === "saving" ? t("saving") : state === "saved" ? t("saved") : state === "error" ? t("saveError") : ""}
               </span>
@@ -159,15 +160,15 @@ export default function Checklist({ selected }: { selected?: string }) {
                 isHeading(it.text) ? (
                   <li key={i} className="check-heading">
                     <input value={it.text.replace(/^#+\s*/, "")} onChange={(e) => patchItem(i, { text: "# " + e.target.value })} aria-label={t("title")} />
-                    <button className="link-btn" onClick={() => setItems(current.items.filter((_, k) => k !== i))} aria-label={t("del")}>×</button>
+                    <button className="link-btn" onClick={() => setItems(current.items.filter((_, k) => k !== i))} aria-label={t("del")}><X /></button>
                   </li>
                 ) : (
                   <li key={i} className={it.done ? "done" : ""}>
                     <div className="check-row">
                       <input type="checkbox" checked={it.done} onChange={(e) => patchItem(i, { done: e.target.checked })} aria-label={it.text} />
                       <input className="check-text" value={it.text} onChange={(e) => patchItem(i, { text: e.target.value })} aria-label={t("title")} />
-                      <button className={"link-btn" + (it.note ? " has" : "")} title={t("itemNote")} aria-label={t("itemNote")} onClick={() => setOpenNote(openNote === i ? null : i)}>📝</button>
-                      <button className="link-btn" onClick={() => setItems(current.items.filter((_, k) => k !== i))} aria-label={t("del")}>×</button>
+                      <button className={"link-btn" + (it.note ? " has" : "")} title={t("itemNote")} aria-label={t("itemNote")} onClick={() => setOpenNote(openNote === i ? null : i)}><NotebookPen /></button>
+                      <button className="link-btn" onClick={() => setItems(current.items.filter((_, k) => k !== i))} aria-label={t("del")}><X /></button>
                     </div>
                     {(openNote === i || it.note) && (
                       <textarea className="check-note" rows={openNote === i ? 2 : 1} value={it.note} onFocus={() => setOpenNote(i)} onChange={(e) => patchItem(i, { note: e.target.value })} placeholder={t("itemNote")} aria-label={t("itemNote")} />

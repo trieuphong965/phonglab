@@ -1,3 +1,4 @@
+import { Upload } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { api, LANGS, useSettings, useT, type Lang } from "../lib";
 import { Logo } from "../Logo";
@@ -74,7 +75,7 @@ export default function SettingsPage() {
           <span className={"brand-mark big" + (logoUrl ? " custom" : "")}>{logoUrl ? <img src={logoUrl} alt="" /> : <Logo />}</span>
           <div className="logo-actions">
             <div className="chips">
-              <button className="btn" onClick={() => picker.current?.click()}>⬆ {t("uploadLogo")}</button>
+              <button className="btn" onClick={() => picker.current?.click()}><Upload />{t("uploadLogo")}</button>
               {logoUrl && <button className="btn" onClick={resetLogo}>{t("resetLogo")}</button>}
             </div>
             <span className="muted small">{t("logoHint")}</span>

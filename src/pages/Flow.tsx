@@ -1,3 +1,4 @@
+import { ArrowLeft, Download } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import type { ExcalidrawImperativeAPI } from "@excalidraw/excalidraw/types";
 import { Excalidraw } from "@excalidraw/excalidraw";
@@ -112,7 +113,7 @@ export default function Flow({ selected, theme }: { selected?: string; theme: st
         ) : (
           <>
             <div className="toolbar">
-              <button className="btn back" onClick={() => navigate("/flow")}>←</button>
+              <button className="btn back" onClick={() => navigate("/flow")}><ArrowLeft /></button>
               <input
                 className="title-input inline"
                 value={flow.title}
@@ -129,7 +130,7 @@ export default function Flow({ selected, theme }: { selected?: string; theme: st
               {(["pdf", "excel"] as const).map((kind) => (
                 <span key={kind} className="menu-anchor">
                   <button className="btn" disabled={busy} aria-haspopup="menu" aria-expanded={menu === kind} onClick={() => setMenu(menu === kind ? null : kind)}>
-                    ⬇ {kind === "pdf" ? "PDF" : "Excel"}
+                    <Download />{kind === "pdf" ? "PDF" : "Excel"}
                   </button>
                   {menu === kind && (
                     <span className="menu" role="menu">

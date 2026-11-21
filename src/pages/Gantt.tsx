@@ -1,3 +1,4 @@
+import { X, Pencil, Plus, Download, Paperclip, MessageSquare, ChevronDown, ChevronRight } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { api, store, stored, todayStr, useT } from "../lib";
 import { buildRows, dayDate, fmtHours, fromDay, subtree, toDay, todayDay, type GanttItem, type HistEvent, type Row } from "../gantt";
@@ -6,7 +7,7 @@ import GanttHistory from "../GanttHistory";
 const EDITABLE = ["title", "start_date", "end_date", "progress", "assignee", "depends_on", "parent_id", "plan_hours", "actual_hours"] as const;
 type DropPos = "before" | "after" | "inside";
 
-const ROW = 34;
+const ROW = 36;
 const SCALES = { day: 24, week: 10, month: 4 } as const;
 type Scale = keyof typeof SCALES;
 type Drag = { id: string; mode: "move" | "l" | "r"; x0: number; delta: number };
@@ -48,7 +49,7 @@ export default function Gantt({ selected, subTab }: { selected?: string; subTab?
 
   useEffect(() => {
     if (!editing) return;
-    const esc = (e: KeyboardEvent) => e.key === "Escape" && !(e.target as HTMLElement).closest("textarea, .palette") && open(null);
+    const esc = (e: KeyboardEvent) => e.key === "Escape" && !(e.target as Partial<Element>).closest?.("textarea, .palette") && open(null);
     window.addEventListener("keydown", esc);
     return () => window.removeEventListener("keydown", esc);
   });
@@ -63,12 +64,13 @@ export default function Gantt({ selected, subTab }: { selected?: string; subTab?
 
   /** Per task: comment/file counts and the events of each day (for the dots on the bars). */
   const acts = useMemo(() => {
-    const m = new Map<string, { comments: number; files: number; days: Map<string, string[]> }>();
+    const m = new Map<string, { comments: number; files: number; days: Map<string, string[]>; fileDays: Set<string> }>();
     for (const a of activity) {
-      const e = m.get(a.item_id) ?? { comments: 0, files: 0, days: new Map() };
+      const e = m.get(a.item_id) ?? { comments: 0, files: 0, days: new Map(), fileDays: new Set<string>() };
       if (a.kind === "comment") e.comments++;
       else e.files++;
-      const line = a.kind === "comment" ? "💬 " + a.body : `📎 ${a.name ?? "?"} rev${a.rev ?? "?"}${a.body ? " · " + a.body : ""}`;
+      const line = a.kind === "comment" ? a.body : `${a.name ?? "?"} rev${a.rev ?? "?"}${a.body ? " · " + a.body : ""}`;
+      if (a.kind === "file") e.fileDays.add(a.event_date);
       e.days.set(a.event_date, [...(e.days.get(a.event_date) ?? []), line]);
       m.set(a.item_id, e);
     }
@@ -129,7 +131,7 @@ export default function Gantt({ selected, subTab }: { selected?: string; subTab?
   /* ----- header cells ----- */
   const { months, cells, weekends } = useMemo(() => {
     const months: { label: string; span: number }[] = [];
-    const cells: { label: string; span: number; dow: number }[] = [];
+    const cells: { label: string; span: number; dow: number; now?: boolean }[] = [];
     const weekends: { x: number; sun: boolean }[] = [];
     for (let n = min; n <= max; n++) {
       const d = dayDate(n);
@@ -137,7 +139,7 @@ export default function Gantt({ selected, subTab }: { selected?: string; subTab?
       if (months.at(-1)?.label === label) months.at(-1)!.span++;
       else months.push({ label, span: 1 });
       const dow = d.getUTCDay();
-      if (scale === "day") cells.push({ label: String(d.getUTCDate()), span: 1, dow });
+      if (scale === "day") cells.push({ label: String(d.getUTCDate()), span: 1, dow, now: n === today });
       else if (scale === "week") {
         if (dow === 1 || n === min) cells.push({ label: dow === 1 ? md(n) : "", span: 1, dow: 1 });
         else cells.at(-1)!.span++;
@@ -306,7 +308,7 @@ export default function Gantt({ selected, subTab }: { selected?: string; subTab?
         <h1>{t("gantt")}</h1>
         <button className="btn primary" onClick={() => add(null)}>+ {t("newItem")}</button>
         <button className="btn" onClick={download} disabled={busy || !items?.length}>
-          {busy ? t("loading") : "⬇ Excel"}
+          {busy ? t("loading") : <><Download />Excel</>}
         </button>
         <span className="grow" />
         <label className="check">
@@ -357,7 +359,7 @@ export default function Gantt({ selected, subTab }: { selected?: string; subTab?
               >
                 {r.isGroup ? (
                   <button className="g-toggle" aria-label="toggle" onClick={() => patch(r.item.id, { collapsed: r.item.collapsed ? 0 : 1 })}>
-                    {r.item.collapsed ? "▸" : "▾"}
+                    {r.item.collapsed ? <ChevronRight /> : <ChevronDown />}
                   </button>
                 ) : (
                   <span className="g-toggle" />
@@ -365,14 +367,14 @@ export default function Gantt({ selected, subTab }: { selected?: string; subTab?
                 <button className="g-title" title={r.item.title} onClick={() => open(r.item)}>{r.item.title || t("untitled")}</button>
                 {acts.has(r.item.id) && (
                   <button className="g-badges" title={t("history")} aria-label={t("history")} onClick={() => openHistory(r.item)}>
-                    {acts.get(r.item.id)!.comments > 0 && <span>💬{acts.get(r.item.id)!.comments}</span>}
-                    {acts.get(r.item.id)!.files > 0 && <span>📎{acts.get(r.item.id)!.files}</span>}
+                    {acts.get(r.item.id)!.comments > 0 && <span><MessageSquare />{acts.get(r.item.id)!.comments}</span>}
+                    {acts.get(r.item.id)!.files > 0 && <span><Paperclip />{acts.get(r.item.id)!.files}</span>}
                   </button>
                 )}
                 <span className="g-actions">
-                  <button title={t("edit")} aria-label={t("edit")} onClick={() => open(r.item)}>✎</button>
-                  <button title={t("addChild")} aria-label={t("addChild")} onClick={() => add(r.item)}>＋</button>
-                  <button title={t("del")} aria-label={t("del")} onClick={() => remove(r.item)}>×</button>
+                  <button title={t("edit")} aria-label={t("edit")} onClick={() => open(r.item)}><Pencil /></button>
+                  <button title={t("addChild")} aria-label={t("addChild")} onClick={() => add(r.item)}><Plus /></button>
+                  <button title={t("del")} aria-label={t("del")} onClick={() => remove(r.item)}><X /></button>
                 </span>
               </div>
             ))}
@@ -386,7 +388,7 @@ export default function Gantt({ selected, subTab }: { selected?: string; subTab?
               </div>
               <div className="g-days">
                 {cells.map((c, i) => (
-                  <span key={i} className={c.dow === 0 ? "sun" : c.dow === 6 ? "sat" : ""} style={{ width: c.span * px }}>{c.label}</span>
+                  <span key={i} className={(c.dow === 0 ? "sun" : c.dow === 6 ? "sat" : "") + (c.now ? " now" : "")} style={{ width: c.span * px }}>{c.label}</span>
                 ))}
               </div>
             </div>
@@ -407,7 +409,7 @@ export default function Gantt({ selected, subTab }: { selected?: string; subTab?
                 return (
                   <div key={r.item.id} className="g-line" style={{ top: i * ROW, left: s.x }}>
                     <div
-                      className={"g-bar" + (r.isGroup ? " group" : "") + (late ? " late" : "") + (drag?.id === r.item.id ? " dragging" : "")}
+                      className={"g-bar" + (r.isGroup ? " group" : "") + (late ? " late" : "") + (!r.isGroup && r.progress >= 100 ? " complete" : "") + (drag?.id === r.item.id ? " dragging" : "")}
                       style={{ width: s.w }}
                       onPointerDown={(e) => {
                         if (r.isGroup) return void open(r.item);
@@ -423,14 +425,16 @@ export default function Gantt({ selected, subTab }: { selected?: string; subTab?
                       onPointerUp={() => endDrag(r)}
                       onPointerCancel={() => setDrag(null)}
                     >
-                      <span className="g-fill" style={{ width: r.progress + "%" }} />
                       {s.w >= 36 && <span className="g-pct">{r.progress}%</span>}
+                      <span className="g-fill" style={{ width: r.progress + "%" }}>
+                        {s.w >= 36 && <span className="g-pct" style={{ width: s.w }}>{r.progress}%</span>}
+                      </span>
                       {!r.isGroup && s.w >= 16 && <><span className="g-h l" data-h="l" /><span className="g-h r" data-h="r" /></>}
                     </div>
                     {[...(acts.get(r.item.id)?.days ?? [])].map(([d, lines]) => (
                       <button
                         key={d}
-                        className={"g-dot" + (lines.some((l) => l.startsWith("📎")) ? " file" : "")}
+                        className={"g-dot" + (acts.get(r.item.id)?.fileDays.has(d) ? " file" : "")}
                         style={{ left: (toDay(d) - s.start) * px + px / 2 - 4 }}
                         title={`${d}\n${lines.join("\n")}`}
                         aria-label={`${t("history")} ${d}`}
@@ -459,7 +463,7 @@ export default function Gantt({ selected, subTab }: { selected?: string; subTab?
         <aside className="drawer" role="dialog" aria-label={editing.title || t("untitled")}>
           <header className="drawer-head">
             <input className="title-input" value={editing.title} onChange={(e) => setEditing({ ...editing, title: e.target.value })} onKeyDown={(e) => e.key === "Enter" && commit()} aria-label={t("title")} placeholder={t("title")} />
-            <button className="icon-btn" onClick={() => open(null)} aria-label={t("close")} title={t("close")}>×</button>
+            <button className="icon-btn" onClick={() => open(null)} aria-label={t("close")} title={t("close")}><X /></button>
           </header>
           <div className="seg drawer-tabs" role="tablist">
             <button role="tab" aria-selected={tab === "info"} className={tab === "info" ? "on" : ""} onClick={() => setTab("info")}>{t("info")}</button>
